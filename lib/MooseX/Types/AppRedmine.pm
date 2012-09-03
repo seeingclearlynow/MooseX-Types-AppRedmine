@@ -14,7 +14,7 @@ use App::Redmine::Status;
 use App::Redmine::Tracker;
 use App::Redmine::User;
 use MooseX::Types::Moose qw(HashRef);
-use MooseX::Types::Common::String qw();
+use MooseX::Types::Common::String qw(NonEmptySimpleStr);
 
 # ABSTRACT:Moose types for App::Redmine
 # VERSION
@@ -45,9 +45,25 @@ coerce RedmineStatus,
   from HashRef,
   via  { App::Redmine::Status->new( $_ ) };
 
+coerce RedmineStatus,
+  from Int,
+  via  { App::Redmine::Status->new( { id => $_ } ) };
+
+coerce RedmineStatus,
+  from NonEmptySimpleStr,
+  via  { App::Redmine::Status->new( { name => $_ } ) };
+
 coerce RedmineTracker,
   from HashRef,
   via  { App::Redmine::Tracker->new( $_ ) };
+
+coerce RedmineTracker,
+  from Int,
+  via  { App::Redmine::Tracker->new( { id => $_ } ) };
+
+coerce RedmineTracker,
+  from NonEmptySimpleStr,
+  via  { App::Redmine::Tracker->new( { name => $_ } ) };
 
 coerce RedmineUser,
   from HashRef,
